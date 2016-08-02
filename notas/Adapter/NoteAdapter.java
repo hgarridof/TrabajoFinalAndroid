@@ -1,4 +1,4 @@
-package com.hgf.android.notas;
+package com.hgf.android.notas.Adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,14 +8,17 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 
+import com.hgf.android.notas.Notes.Note;
+import com.hgf.android.notas.R;
+
 import java.util.List;
 
 /**
  * Created by hector on 6/6/16.
  */
-public class NotaAdapter<N> extends ArrayAdapter<Notas> {
+public class NoteAdapter<N> extends ArrayAdapter<Note> {
 
-    public NotaAdapter(Context context, List<Notas> objects) {
+    public NoteAdapter(Context context, List<Note> objects) {
         super(context, 0, objects);
     }
 
@@ -45,7 +48,7 @@ public class NotaAdapter<N> extends ArrayAdapter<Notas> {
         TextView fecha = (TextView)listItemView.findViewById(R.id.dateTextView);
 
         //Obteniendo instancia de la Tarea en la posición actual
-        Notas nota = (Notas)getItem(position);
+        Note nota = (Note)getItem(position);
 
 
 
