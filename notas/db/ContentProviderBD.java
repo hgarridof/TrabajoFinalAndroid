@@ -93,6 +93,7 @@ public class ContentProviderBD extends android.content.ContentProvider {
         }
     }
 
+    //Introducir nuevas Lineas en la tabla
     @Override
     public Uri insert(Uri uri, ContentValues values) {
         long regId = 1;
@@ -106,6 +107,7 @@ public class ContentProviderBD extends android.content.ContentProvider {
         return newUri;
     }
 
+    //Borrar registros de la tabla
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
         int cont;
@@ -123,6 +125,8 @@ public class ContentProviderBD extends android.content.ContentProvider {
         return cont;
     }
 
+
+    //Actualizar registros de la tabla
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         int cont;

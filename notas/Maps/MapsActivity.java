@@ -12,7 +12,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -31,6 +34,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.hgf.android.notas.Notes.Note;
 import com.hgf.android.notas.R;
 import com.hgf.android.notas.db.ContentProviderBD;
+import com.hgf.android.notas.ui.AddData;
 import com.hgf.android.notas.ui.MainActivity;
 
 import java.util.ArrayList;
@@ -41,7 +45,7 @@ import java.util.List;
  */
 
 
-public class MapsActivity extends Activity {
+public class MapsActivity extends AppCompatActivity {
 
     GoogleMap mMap;
     MapFragment mMapFragment;
@@ -56,30 +60,31 @@ public class MapsActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
-        Intent intent = getIntent();
         showNotes();
         setUpMapIfNeeded();
 
+        if (item.size() > 0) {
+            for (int index = 0; index < item.size(); index++) {
+                LatLng nota = null;
+                mNote = item.get(index);
+                Double lat = mNote.getLatitud();
+                double lon = mNote.getLongitud();
 
-        for(int index = 0; index < item.size(); index++){
-            LatLng nota = null;
-            mNote = item.get(index);
-            Double lat = mNote.getLatitud();
-            double lon = mNote.getLongitud();
+                nota = new LatLng(lat, lon);
+                Log.d("ERROR ", mNote.getTitulo() + " LatLon: " + nota.toString());
 
-            nota = new LatLng(lat, lon);
-            Log.d("ERROR ",mNote.getTitulo()+" LatLon: " + nota.toString());
+                setMarker(nota, mNote.getTitulo()); // Agregamos el marcador verde
 
-            setMarker(nota, mNote.getTitulo()); // Agregamos el marcador verde
-
+            }
         }
 
 
     }
 
+    //Inincialización del mapa
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     private void setUpMapIfNeeded() {
-// Configuramos el objeto GoogleMaps con valores iniciales.
+        // Configuramos el objeto GoogleMaps con valores iniciales.
         if (mMap == null) {
             //Instanciamos el objeto mMap a partir del MapFragment definido bajo el Id "map"
             mMapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
@@ -111,7 +116,7 @@ public class MapsActivity extends Activity {
 
     }
 
-
+    //Función para recoger la infrmación de todas las notas registradas en la base de datos
     public List<Note> showNotes(){
 
         String[] projection = new String[] {
@@ -135,7 +140,8 @@ public class MapsActivity extends Activity {
                 null);      //Orden de los resultados
 
         if (!(cur.moveToFirst()) || cur.getCount() ==0){
-
+            item = new ArrayList<Note>();
+            item.isEmpty();
         }
         else if (cur.moveToFirst()) {
             int id = 0;
@@ -174,6 +180,40 @@ public class MapsActivity extends Activity {
     protected void onResume() {
         super.onResume();
         setUpMapIfNeeded();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_maps, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_Main) {
+            Intent intent = new Intent(MapsActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
+        if (id == R.id.action_AddData) {
+            Intent intent = new Intent(MapsActivity.this, AddData.class);
+            startActivity(intent);
+            finish();
+        }
+
+        if (id == R.id.Salir){
+            this.finish();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
 }

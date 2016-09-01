@@ -2,6 +2,7 @@ package com.hgf.android.notas.Notes;
 
 /**
  * Created by hector on 8/6/16.
+ * Clase Notas con la configuración básica para las notas.
  */
 public class Note {
 
